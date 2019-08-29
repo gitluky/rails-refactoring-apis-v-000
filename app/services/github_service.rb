@@ -2,8 +2,14 @@ class GithubService
 
   attr_accessor :access_token
 
-  def initialize(access_hash = nil)
-    @access_token = access_hash["access_token"] if access_hash
+  def initialize(hash={})
+    if hash.is_a?(Hash)
+      hash.each do |k,v|
+        self.send("#{k}=", v) unless hash.empty?
+      end
+    else
+      @access_token = hash
+    end
   end
 
   def authenticate!(client_id, client_secret, code)
